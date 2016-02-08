@@ -8,4 +8,4 @@ else
 	PORT=$1
 fi
 
-sudo python web/manage.py runserver 0.0.0.0:$PORT
+sudo python manage.py runserver 0.0.0.0:$PORT
