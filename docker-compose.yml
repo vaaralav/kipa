@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_USER=kipa
+      - POSTGRES_PASSWORD=kipa
+      - POSTGRES_DB=kipa
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data:/var/lib/postgresql/data
+
+  kipa:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - DB_TYPE=postgresql_psycopg2
+      - DB_USER=kipa
+      - DB_NAME=kipa
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_PASSWD=kipa
+    depends_on:
+      - db
