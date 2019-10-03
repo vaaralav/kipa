@@ -17,11 +17,17 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - DB_TYPE=postgresql_psycopg2
-      - DB_USER=kipa
-      - DB_NAME=kipa
-      - DB_HOST=db
-      - DB_PORT=5432
-      - DB_PASSWD=kipa
+      - DATABASE_URL=postgres://kipa:kipa@db:5432/kipa
     depends_on:
       - db
+
+  nginx:
+    image: nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - kipa
+      - db
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./passwords:/etc/nginx/htpasswd:ro

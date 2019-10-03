@@ -1,13 +1,15 @@
 import os
 
 import time
+import dj_database_url
+
 try :
         fin = open("templates/version.html", "r")
         revision_line=fin.readline() ;
         fin.close()
-        fout = open("templates/version.html", "w") 
+        fout = open("templates/version.html", "w")
         fout.write( revision_line )
-        fout.write( "{% comment %} " +time.strftime('%X %x') +" {% endcomment %}" ) # Add clock to force svn commit 
+        fout.write( "{% comment %} " +time.strftime('%X %x') +" {% endcomment %}" ) # Add clock to force svn commit
         fout.close()
 except: pass
 
@@ -28,13 +30,14 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-DATABASE_ENGINE = 'django.db.backends.' + os.getenv('DB_TYPE', 'sqlite3')           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'ado_mssql'.
-DATABASE_NAME = os.getenv('DB_NAME', hakemisto + '/tupa.db')     # Or path to database file if using sqlite3.
-DATABASE_USER = os.getenv('DB_USER', '')             # Not used with sqlite3.
-DATABASE_PASSWORD = os.getenv('DB_PASSWD', '')         # Not used with sqlite3.
-DATABASE_HOST = os.getenv('DB_HOST', '')             # Set to empty string for localhost. Not used with sqlite3.
-DATABASE_PORT = os.getenv('DB_PORT', '')             # Set to empty string for default. Not used with sqlite3.
-
+# DATABASE_ENGINE = 'django.db.backends.' + os.getenv('DB_TYPE', 'sqlite3')           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'ado_mssql'.
+# DATABASE_NAME = os.getenv('DB_NAME', hakemisto + '/tupa.db')     # Or path to database file if using sqlite3.
+# DATABASE_USER = os.getenv('DB_USER', '')             # Not used with sqlite3.
+# DATABASE_PASSWORD = os.getenv('DB_PASSWD', '')         # Not used with sqlite3.
+# DATABASE_HOST = os.getenv('DB_HOST', '')             # Set to empty string for localhost. Not used with sqlite3.
+# DATABASE_PORT = os.getenv('DB_PORT', '')             # Set to empty string for default. Not used with sqlite3.
+DATABASES = {}
+DATABASES["default"] = dj_database_url.config(default="sqlite://./tupa.db")
 
 # Cache
 TAUSTALASKENTA = False # Tulokset lasketaan taustalla (Vaatii toimiakseen tomivan cachekokoonpanon)
@@ -43,14 +46,14 @@ CACHE_TULOKSET_TIME = 1800 # Tuloscachen voimassaoloaika viimeisesta nayttokerra
 #CACHE_BACKEND = 'locmem:///' # Cache system for developement
 #CACHE_BACKEND = 'locmem:///' # Cache system for developement
 CACHE_BACKEND = 'db://tupa_tulos_cache'
-if not CACHE_TULOKSET : 
+if not CACHE_TULOKSET :
         CACHE_BACKEND = 'dummy:///' # No cache in use
         TAUSTALASENTA = False
 
-# Local time zone for this installation. 
+# Local time zone for this installation.
 TIME_ZONE = 'Europe/Helsinki'
 
-# Language code for this installation. 
+# Language code for this installation.
 LANGUAGE_CODE = 'fi-FI'
 
 SITE_ID = 1
@@ -113,7 +116,7 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     #'django.contrib.formtools',
     'django.template',
-    'django.contrib.databrowse'     
+    'django.contrib.databrowse'
 
 ]
 
@@ -121,4 +124,3 @@ LOGIN_URL = ('/kipa/')
 LOGIN_REDIRECT_URL = ('/kipa/')
 
 TEST_RUNNER = ('tupa.tests.run_one_fixture')
-

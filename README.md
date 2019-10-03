@@ -26,8 +26,17 @@ tai
 ```bash
 git clone git@github.com:vaaralav/kipa.git
 cd kipa
+# Plain docker
 docker build -t kipa/dev . # Tee Docker image palvelimesta
 docker run -d -p 8000:8000 kipa/dev # Käynnistä palvelin
+# Docker Compose: PostgreSQL + Basic Auth + portissa 80
+cp passwords.example passwords # testuser testpassword käyttäjätunnukset
+docker-compose up -d --build
+```
+
+Basic Auth käyttäjien ja salasanojen lisääminen
+```shell
+htpasswd -cb passwords käyttäjätunnus salasana
 ```
 
 ### Vaihtoehtoisesti ilman Dockeria paikallisella pythonilla
